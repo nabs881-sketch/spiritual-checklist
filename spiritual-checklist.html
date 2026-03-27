@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="theme-color" content="#f9f7f4">
+<title>Spiritual Checklist</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #f9f7f4;
+  --surface: #ffffff;
+  --border: #ede9e3;
+  --border2: #e0dbd2;
+  --text: #2d2926;
+  --muted: #9b9188;
+  --accent: #2d7a5f;
+  --accent-light: #e8f4ef;
+  --accent-mid: #c5e0d5;
+  --gold: #c49a3c;
+  --gold-light: #fdf6e3;
+  --red-soft: #c0392b;
+  --safe-top: env(safe-area-inset-top, 0px);
+  --safe-bot: env(safe-area-inset-bottom, 0px);
+  --font-serif: 'Cormorant Garamond', serif;
+  --font-sans: 'DM Sans', sans-serif;
+  --radius: 16px;
+  --shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 16px rgba(0,0,0,0.04);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  min-height: 100vh;
+  overscroll-behavior: none;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── HEADER ── */
+.header {
+  background: var(--surface);
+  border-bottom: 1px solid var(--border);
+  padding: calc(18px + var(--safe-top)) 20px 16px;
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  box-shadow: var(--shadow);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.app-title {
+  font-family: var(--font-serif);
+  font-size: 26px;
+  font-weight: 600;
+  color: var(--text);
+  letter-spacing: 0.3px;
+}
+
+.app-title span {
+  color: var(--accent);
+}
+
+.date-pill {
+  font-size: 11px;
+  color: var(--muted);
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+/* Progress global */
+.global-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.progress-track {
+  flex: 1;
+  height: 5px;
+  background: var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #4aab8a);
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.progress-label {
+  font-size: 11px;
+  color: var(--accent);
+  font-weight: 500;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── LEVEL TABS ── */
+.level-tabs {
+  display: flex;
+  gap: 6px;
+  padding: 14px 20px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  background: var(--bg);
+}
+.level-tabs::-webkit-scrollbar { display: none; }
+
+.level-tab {
+  flex-shrink: 0;
+  padding: 7px 16px;
+  border-radius: 20px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.level-tab.active {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: white;
+}
+
+.level-tab.locked {
+  opacity: 0.4;
+  cursor: default;
+}
+
+.level-tab.completed {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+/* ── CONTENT ── */
+.content {
+  padding: 0 16px 100px;
+}
+
+/* ── SECTION ── */
+.section {
+  margin-bottom: 10px;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 4px 8px;
+}
+
+.section-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 8px;
+  background: var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+/* ── ITEM ── */
+.item {
+  background: var(--surface);
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: var(--shadow);
+  position: relative;
+  overflow: hidden;
+}
+
+.item::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 3px;
+  background: var(--border2);
+  transition: background 0.3s;
+}
+
+.item.checked {
+  background: var(--accent-light);
+  border-color: var(--accent-mid);
+}
+
+.item.checked::before {
+  background: var(--accent);
+}
+
+.item:active {
+  transform: scale(0.99);
+}
+
+/* Checkbox custom */
+.checkbox {
+  width: 22px;
+  height: 22px;
+  border-radius: 7px;
+  border: 2px solid var(--border2);
+  background: var(--bg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.item.checked .checkbox {
+  background: var(--accent);
+  border-color: var(--accent);
+  transform: scale(1.05);
+}
+
+.check-svg {
+  opacity: 0;
+  transform: scale(0.5);
+  transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.item.checked .check-svg {
+  opacity: 1;
+  transform: scale(1);
+}
+
+.item-content {
+  flex: 1;
+}
+
+.item-label {
+  font-size: 14px;
+  font-weight: 400;
+  color: var(--text);
+  line-height: 1.4;
+  transition: color 0.2s;
+}
+
+.item.checked .item-label {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+.item-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── COUNTER ── */
+.counter-item {
+  cursor: default;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 10px;
+}
+
+.counter-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.counter-body {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 12px;
+  background: var(--bg);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+}
+
+.counter-display {
+  flex: 1;
+  text-align: center;
+}
+
+.counter-number {
+  font-family: var(--font-serif);
+  font-size: 36px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1;
+}
+
+.counter-total {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+.counter-progress-track {
+  height: 4px;
+  background: var(--border);
+  border-radius: 4px;
+  overflow: hidden;
+  margin-top: 6px;
+}
+
+.counter-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), #4aab8a);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+}
+
+.btn-counter {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  border: none;
+  background: var(--accent);
+  color: white;
+  font-size: 22px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.1s;
+  flex-shrink: 0;
+}
+
+.btn-counter:active {
+  transform: scale(0.92);
+}
+
+.btn-counter.reset-small {
+  background: var(--border);
+  color: var(--muted);
+  font-size: 14px;
+  width: 36px;
+  height: 36px;
+}
+
+.counter-done {
+  background: var(--accent-light);
+  border-color: var(--accent-mid);
+}
+
+.counter-done::before { background: var(--accent); }
+
+/* ── LINK ITEM ── */
+.link-item {
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--gold-light);
+  border: 1.5px solid #e8d89a;
+  border-radius: var(--radius);
+  padding: 14px 16px;
+  margin-bottom: 8px;
+  box-shadow: var(--shadow);
+  transition: all 0.2s;
+}
+
+.link-item:active { transform: scale(0.99); }
+
+.link-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.link-label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text);
+}
+
+.link-sub {
+  font-size: 11px;
+  color: var(--muted);
+  margin-top: 2px;
+}
+
+/* ── LEVEL HEADER ── */
+.level-hero {
+  background: linear-gradient(135deg, var(--accent) 0%, #1a5c46 100%);
+  border-radius: 20px;
+  padding: 24px 20px;
+  margin-bottom: 16px;
+  color: white;
+  position: relative;
+  overflow: hidden;
+}
+
+.level-hero::after {
+  content: '';
+  position: absolute;
+  right: -20px;
+  top: -20px;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.06);
+}
+
+.level-hero-num {
+  font-family: var(--font-serif);
+  font-size: 13px;
+  opacity: 0.7;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+
+.level-hero-title {
+  font-family: var(--font-serif);
+  font-size: 28px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.level-hero-progress {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.level-hero-track {
+  flex: 1;
+  height: 6px;
+  background: rgba(255,255,255,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.level-hero-fill {
+  height: 100%;
+  background: white;
+  border-radius: 10px;
+  transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.level-hero-pct {
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0.9;
+  min-width: 36px;
+  text-align: right;
+}
+
+/* ── BOTTOM BAR ── */
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0; right: 0;
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 12px 20px calc(12px + var(--safe-bot));
+  display: flex;
+  gap: 10px;
+  box-shadow: 0 -4px 20px rgba(0,0,0,0.06);
+}
+
+.btn-reset {
+  flex: 1;
+  padding: 13px;
+  border-radius: 14px;
+  border: 1.5px solid var(--border2);
+  background: var(--surface);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--muted);
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-sans);
+}
+
+.btn-reset:active { background: var(--bg); }
+
+.btn-bismillah {
+  flex: 2;
+  padding: 13px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--accent), #1a5c46);
+  font-size: 14px;
+  font-weight: 500;
+  color: white;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: var(--font-serif);
+  letter-spacing: 0.5px;
+}
+
+.btn-bismillah:active { opacity: 0.9; transform: scale(0.98); }
+
+/* ── LOCKED OVERLAY ── */
+.locked-screen {
+  text-align: center;
+  padding: 60px 30px;
+}
+
+.lock-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 20px;
+}
+
+.lock-title {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.lock-sub {
+  font-size: 13px;
+  color: var(--muted);
+  line-height: 1.6;
+  margin-bottom: 24px;
+}
+
+.btn-unlock {
+  padding: 13px 28px;
+  border-radius: 14px;
+  border: 1.5px solid var(--accent);
+  background: var(--accent-light);
+  color: var(--accent);
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: var(--font-sans);
+}
+
+/* ── ANIMATIONS ── */
+@keyframes popIn {
+  from { opacity:0; transform: translateY(8px) scale(0.97); }
+  to   { opacity:1; transform: none; }
+}
+
+.item, .link-item { animation: popIn 0.3s ease both; }
+
+@keyframes celebrate {
+  0%   { transform: scale(1); }
+  40%  { transform: scale(1.08); }
+  70%  { transform: scale(0.96); }
+  100% { transform: scale(1); }
+}
+
+.celebrate { animation: celebrate 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 90px;
+  left: 50%;
+  transform: translateX(-50%) translateY(20px);
+  background: var(--text);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+  opacity: 0;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  pointer-events: none;
+  z-index: 999;
+  white-space: nowrap;
+}
+
+.toast.show {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+</style>
+</head>
+<body>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="header-top">
+    <div class="app-title">Spiritual<span> ✦</span></div>
+    <div class="date-pill" id="datePill"></div>
+  </div>
+  <div class="global-progress">
+    <div class="progress-track">
+      <div class="progress-fill" id="globalFill" style="width:0%"></div>
+    </div>
+    <div class="progress-label" id="globalLabel">0%</div>
+  </div>
+</div>
+
+<!-- LEVEL TABS -->
+<div class="level-tabs" id="levelTabs"></div>
+
+<!-- CONTENT -->
+<div class="content" id="content"></div>
+
+<!-- BOTTOM BAR -->
+<div class="bottom-bar">
+  <button class="btn-reset" onclick="confirmReset()">↺ Reset du jour</button>
+  <button class="btn-bismillah" onclick="showToast('بِسْمِ اللَّهِ — Bismillah 🌿')">بِسْمِ اللَّهِ</button>
+</div>
+
+<script>
+// ═══════════════════════════════
+// CONFIG DES NIVEAUX
+// ═══════════════════════════════
+const LEVELS = [
+  {
+    id: 1,
+    title: 'Fondations',
+    subtitle: 'Les piliers essentiels du quotidien',
+    sections: [
+      {
+        icon: '🕌',
+        title: 'Les 5 Prières',
+        items: [
+          { id: 'fajr',    label: 'Fajr', sub: 'Prière de l\'aube' },
+          { id: 'dhuhr',   label: 'Dhuhr', sub: 'Prière du milieu du jour' },
+          { id: 'asr',     label: 'Asr', sub: 'Prière de l\'après-midi' },
+          { id: 'maghrib', label: 'Maghrib', sub: 'Prière du coucher du soleil' },
+          { id: 'isha',    label: 'Isha', sub: 'Prière de la nuit' },
+        ]
+      },
+      {
+        icon: '📖',
+        title: 'Dhikr & Récitation',
+        items: [
+          { id: 'ayat_kursi',  label: 'Ayat al-Kursi', sub: 'Après chaque prière & avant de dormir' },
+          { id: 'ikhlass_3x',  label: 'Sourate Al-Ikhlass × 3', sub: 'Équivaut à réciter le Coran en entier' },
+          { id: 'shukr',       label: 'Remercier Allah', sub: 'Alhamdulillah — au moins 3 grâces du jour' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 2,
+    title: 'Approfondissement',
+    subtitle: 'Renforcer le lien avec Allah',
+    sections: [
+      {
+        icon: '🕌',
+        title: 'Prière & Mosquée',
+        items: [
+          { id: 'mosquee', label: 'Prière à la mosquée', sub: 'Au moins une prière en jamaah' },
+        ]
+      },
+      {
+        icon: '📿',
+        title: 'Compteurs',
+        items: [
+          { id: 'istighfar', label: 'Istighfar', sub: 'Astaghfirullah — 100 fois', type: 'counter', target: 100 },
+          { id: 'tasbih',    label: 'Tasbih complet', sub: 'SubhanAllah × 33 · Alhamdulillah × 33 · Allahu Akbar × 33', type: 'counter', target: 99 },
+        ]
+      },
+      {
+        icon: '🎧',
+        title: 'Écoute',
+        items: [
+          { id: 'coran_ecoute', label: 'Écouter le Coran', sub: 'Au moins 10 minutes de récitation' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 3,
+    title: 'Connaissance',
+    subtitle: 'Apprendre et grandir',
+    sections: [
+      {
+        icon: '📚',
+        title: 'Étude islamique',
+        items: [
+          { id: 'hadith1', label: '1er Hadith du jour', sub: 'Riyad as-Salihin ou autre recueil' },
+          { id: 'hadith2', label: '2ème Hadith du jour', sub: '' },
+          { id: 'hadith3', label: '3ème Hadith du jour', sub: '' },
+          { id: 'sira',    label: 'Vie du Prophète ﷺ', sub: '10 min · Série Seerah' },
+        ]
+      },
+      {
+        icon: '🎙️',
+        title: 'Contenus',
+        items: [
+          { id: 'podcast', label: 'Podcast Islam Simplement', sub: 'Un épisode ou extrait' },
+          { id: 'sunnah_prières', label: 'Prières surérogatoires', sub: 'Rawatib : 12 rakaat supplémentaires' },
+        ],
+        links: [
+          { label: 'Vie du Prophète ﷺ', sub: 'Playlist YouTube · Seerah', url: 'https://www.youtube.com/results?search_query=seerah+prophet+french', icon: '▶' },
+          { label: 'Islam Simplement', sub: 'Podcast · Écouter maintenant', url: 'https://open.spotify.com/search/islam%20simplement', icon: '🎙' },
+        ]
+      }
+    ]
+  },
+  {
+    id: 4,
+    title: 'Rayonnement',
+    subtitle: 'Donner et partager',
+    sections: [
+      {
+        icon: '💚',
+        title: 'Bonnes actions',
+        items: [
+          { id: 'sadaqa',   label: 'Aumône (Sadaqa)', sub: 'Même un sourire est une aumône' },
+          { id: 'tweet',    label: 'Partager un message islamique', sub: 'Une belle parole sur les réseaux' },
+        ]
+      },
+      {
+        icon: '🤲',
+        title: 'Douaas personnels',
+        items: [
+          { id: 'doua1', label: 'Doua pour ta famille', sub: 'Ya Allah, protège et guide mes proches' },
+          { id: 'doua2', label: 'Doua pour toi-même', sub: 'Guidance, santé, sérénité du cœur' },
+          { id: 'doua3', label: 'Doua pour l\'Oumma', sub: 'Pour tous les musulmans du monde' },
+        ]
+      }
+    ]
+  }
+];
+
+// ═══════════════════════════════
+// STATE
+// ═══════════════════════════════
+const TODAY = new Date().toISOString().split('T')[0];
+let state = JSON.parse(localStorage.getItem('spiritual_v2') || '{}');
+let currentLevel = parseInt(localStorage.getItem('spiritual_level') || '1');
+
+// Reset auto si nouveau jour
+if (state._date !== TODAY) {
+  // Garder les niveaux débloqués, reset les cases
+  const unlockedLevels = state._unlocked || [1];
+  state = { _date: TODAY, _unlocked: unlockedLevels };
+  saveState();
+}
+
+if (!state._unlocked) state._unlocked = [1];
+
+function saveState() {
+  localStorage.setItem('spiritual_v2', JSON.stringify(state));
+  localStorage.setItem('spiritual_level', currentLevel);
+}
+
+// ═══════════════════════════════
+// INIT
+// ═══════════════════════════════
+function init() {
+  // Date
+  const now = new Date();
+  document.getElementById('datePill').textContent =
+    now.toLocaleDateString('fr-FR', { weekday:'long', day:'numeric', month:'long' });
+
+  renderTabs();
+  renderLevel(currentLevel);
+  updateGlobalProgress();
+}
+
+// ═══════════════════════════════
+// TABS
+// ═══════════════════════════════
+function renderTabs() {
+  const tabs = document.getElementById('levelTabs');
+  tabs.innerHTML = LEVELS.map(l => {
+    const unlocked = state._unlocked.includes(l.id);
+    const active = l.id === currentLevel;
+    const pct = getLevelProgress(l.id);
+    const done = pct === 100;
+    let cls = 'level-tab';
+    if (active) cls += ' active';
+    else if (!unlocked) cls += ' locked';
+    else if (done) cls += ' completed';
+    const lock = !unlocked ? ' 🔒' : done ? ' ✓' : '';
+    return `<div class="${cls}" onclick="selectLevel(${l.id})">${l.title}${lock}</div>`;
+  }).join('');
+}
+
+function selectLevel(id) {
+  if (!state._unlocked.includes(id) && id > 1) {
+    showToast('Complete le niveau précédent d\'abord 🌱');
+    return;
+  }
+  currentLevel = id;
+  saveState();
+  renderTabs();
+  renderLevel(id);
+}
+
+// ═══════════════════════════════
+// RENDER LEVEL
+// ═══════════════════════════════
+function renderLevel(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  const content = document.getElementById('content');
+  const pct = getLevelProgress(levelId);
+
+  let html = `
+    <div style="padding-top:14px">
+      <div class="level-hero">
+        <div class="level-hero-num">Niveau ${level.id}</div>
+        <div class="level-hero-title">${level.title}</div>
+        <div class="level-hero-progress">
+          <div class="level-hero-track">
+            <div class="level-hero-fill" style="width:${pct}%"></div>
+          </div>
+          <div class="level-hero-pct">${Math.round(pct)}%</div>
+        </div>
+      </div>
+    </div>`;
+
+  level.sections.forEach(section => {
+    html += `
+      <div class="section">
+        <div class="section-header">
+          <div class="section-icon">${section.icon}</div>
+          <div class="section-title">${section.title}</div>
+        </div>`;
+
+    section.items.forEach((item, idx) => {
+      const delay = idx * 40;
+      if (item.type === 'counter') {
+        html += renderCounter(item, delay);
+      } else {
+        const checked = !!state[item.id];
+        html += `
+          <div class="item ${checked ? 'checked' : ''}" onclick="toggleItem('${item.id}')" style="animation-delay:${delay}ms" id="item-${item.id}">
+            <div class="checkbox">
+              <svg class="check-svg" width="12" height="10" viewBox="0 0 12 10" fill="none">
+                <path d="M1 5L4.5 8.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div class="item-content">
+              <div class="item-label">${item.label}</div>
+              ${item.sub ? `<div class="item-sub">${item.sub}</div>` : ''}
+            </div>
+          </div>`;
+      }
+    });
+
+    if (section.links) {
+      section.links.forEach(link => {
+        html += `
+          <a class="link-item" href="${link.url}" target="_blank" rel="noopener">
+            <div class="link-icon" style="font-size:16px;color:white">${link.icon}</div>
+            <div>
+              <div class="link-label">${link.label}</div>
+              <div class="link-sub">${link.sub}</div>
+            </div>
+          </a>`;
+      });
+    }
+
+    html += `</div>`;
+  });
+
+  // Si niveau verrouillé
+  if (!state._unlocked.includes(levelId)) {
+    html = `
+      <div class="locked-screen">
+        <div class="lock-icon">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#9b9188" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+          </svg>
+        </div>
+        <div class="lock-title">Niveau ${levelId} verrouillé</div>
+        <div class="lock-sub">Complete le Niveau ${levelId - 1} pour débloquer ce niveau et aller plus loin dans ta pratique.</div>
+        <button class="btn-unlock" onclick="unlockLevel(${levelId})">Débloquer quand même →</button>
+      </div>`;
+  }
+
+  content.innerHTML = html;
+
+  // Init counters
+  level.sections.forEach(section => {
+    section.items.forEach(item => {
+      if (item.type === 'counter') initCounter(item);
+    });
+  });
+}
+
+// ═══════════════════════════════
+// COUNTER
+// ═══════════════════════════════
+function renderCounter(item, delay) {
+  const count = state[item.id] || 0;
+  const done = count >= item.target;
+  return `
+    <div class="item counter-item ${done ? 'counter-done checked' : ''}" style="animation-delay:${delay}ms" id="item-${item.id}">
+      <div class="counter-header">
+        <div class="checkbox" id="cb-${item.id}">
+          <svg class="check-svg" style="${done ? 'opacity:1;transform:scale(1)' : ''}" width="12" height="10" viewBox="0 0 12 10" fill="none">
+            <path d="M1 5L4.5 8.5L11 1" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div class="item-content">
+          <div class="item-label">${item.label}</div>
+          <div class="item-sub">${item.sub}</div>
+        </div>
+      </div>
+      <div class="counter-body">
+        <button class="btn-counter reset-small" onclick="resetCounter('${item.id}')">↺</button>
+        <div class="counter-display">
+          <div class="counter-number" id="cnt-num-${item.id}">${count}</div>
+          <div class="counter-total">/ ${item.target}</div>
+          <div class="counter-progress-track">
+            <div class="counter-progress-fill" id="cnt-bar-${item.id}" style="width:${Math.min(count/item.target*100,100)}%"></div>
+          </div>
+        </div>
+        <button class="btn-counter" onclick="incrementCounter('${item.id}', ${item.target})">+</button>
+      </div>
+    </div>`;
+}
+
+function initCounter(item) {
+  // Already rendered with current state
+}
+
+function incrementCounter(id, target) {
+  const count = (state[id] || 0) + 1;
+  if (count > target) return;
+  state[id] = count;
+  saveState();
+
+  const numEl = document.getElementById('cnt-num-'+id);
+  const barEl = document.getElementById('cnt-bar-'+id);
+  const itemEl = document.getElementById('item-'+id);
+  const cbEl   = document.getElementById('cb-'+id);
+
+  if (numEl) numEl.textContent = count;
+  if (barEl) barEl.style.width = Math.min(count/target*100,100)+'%';
+
+  if (count >= target) {
+    itemEl?.classList.add('checked', 'counter-done');
+    if (cbEl) {
+      cbEl.style.background = 'var(--accent)';
+      cbEl.style.borderColor = 'var(--accent)';
+      const svg = cbEl.querySelector('.check-svg');
+      if (svg) { svg.style.opacity='1'; svg.style.transform='scale(1)'; }
+    }
+    itemEl?.classList.add('celebrate');
+    setTimeout(() => itemEl?.classList.remove('celebrate'), 400);
+    showToast(count >= target ? '🌿 Mashallah ! ' + target + ' fois accompli !' : '');
+    checkLevelCompletion(currentLevel);
+  }
+
+  updateGlobalProgress();
+  renderTabs();
+}
+
+function resetCounter(id) {
+  state[id] = 0;
+  saveState();
+  renderLevel(currentLevel);
+  updateGlobalProgress();
+}
+
+// ═══════════════════════════════
+// TOGGLE ITEM
+// ═══════════════════════════════
+function toggleItem(id) {
+  state[id] = !state[id];
+  saveState();
+
+  const el = document.getElementById('item-'+id);
+  if (el) {
+    el.classList.toggle('checked', !!state[id]);
+    if (state[id]) {
+      el.classList.add('celebrate');
+      setTimeout(() => el.classList.remove('celebrate'), 400);
+      if (navigator.vibrate) navigator.vibrate(30);
+    }
+  }
+
+  checkLevelCompletion(currentLevel);
+  updateGlobalProgress();
+  renderTabs();
+}
+
+// ═══════════════════════════════
+// PROGRESS
+// ═══════════════════════════════
+function getLevelItems(levelId) {
+  const level = LEVELS.find(l => l.id === levelId);
+  if (!level) return [];
+  return level.sections.flatMap(s => s.items);
+}
+
+function getLevelProgress(levelId) {
+  const items = getLevelItems(levelId);
+  if (items.length === 0) return 0;
+  const done = items.filter(item => {
+    if (item.type === 'counter') return (state[item.id] || 0) >= item.target;
+    return !!state[item.id];
+  }).length;
+  return (done / items.length) * 100;
+}
+
+function updateGlobalProgress() {
+  const allItems = LEVELS.flatMap(l => getLevelItems(l.id));
+  const done = allItems.filter(item => {
+    if (item.type === 'counter') return (state[item.id] || 0) >= item.target;
+    return !!state[item.id];
+  }).length;
+  const pct = allItems.length > 0 ? (done / allItems.length) * 100 : 0;
+  document.getElementById('globalFill').style.width = pct+'%';
+  document.getElementById('globalLabel').textContent = Math.round(pct)+'%';
+}
+
+function checkLevelCompletion(levelId) {
+  const pct = getLevelProgress(levelId);
+  if (pct >= 80) {
+    const nextId = levelId + 1;
+    if (nextId <= LEVELS.length && !state._unlocked.includes(nextId)) {
+      state._unlocked.push(nextId);
+      saveState();
+      showToast('🎉 Niveau ' + nextId + ' débloqué ! Mashallah !');
+      renderTabs();
+    }
+  }
+}
+
+// ═══════════════════════════════
+// UNLOCK MANUAL
+// ═══════════════════════════════
+function unlockLevel(id) {
+  if (!state._unlocked.includes(id)) state._unlocked.push(id);
+  saveState();
+  renderTabs();
+  renderLevel(id);
+}
+
+// ═══════════════════════════════
+// RESET
+// ═══════════════════════════════
+function confirmReset() {
+  if (confirm('Remettre à zéro toutes les cases du jour ?')) {
+    const unlocked = state._unlocked;
+    state = { _date: TODAY, _unlocked: unlocked };
+    saveState();
+    renderLevel(currentLevel);
+    updateGlobalProgress();
+    renderTabs();
+    showToast('↺ Nouvelle journée — Bismillah 🌿');
+  }
+}
+
+// ═══════════════════════════════
+// TOAST
+// ═══════════════════════════════
+let toastTimeout;
+function showToast(msg) {
+  if (!msg) return;
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimeout);
+  toastTimeout = setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+// ═══════════════════════════════
+// START
+// ═══════════════════════════════
+init();
+</script>
+</body>
+</html>
